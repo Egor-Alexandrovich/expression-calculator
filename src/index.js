@@ -27,7 +27,7 @@ function expressionCalculator(expr) {
         }
         ++i;
     }
-    if (arrayExpr.filter(price => price === '(').length != arrayExpr.filter(price => price === ')').length) {
+    if (arrayExpr.filter(br => br === '(').length != arrayExpr.filter(br => br === ')').length) {
         throw new TypeError('ExpressionError: Brackets must be paired');
     }
     let stackOperator = [];
@@ -50,7 +50,10 @@ function expressionCalculator(expr) {
                 }
                 else {
                     if (operators[topStack(stackOperator)] >= operators[arrayExpr[i]]) {
-                        stackOutput.push(stackOperator.pop());
+                        while (operators[topStack(stackOperator)] >= operators[arrayExpr[i]]) {
+                            stackOutput.push(stackOperator.pop());
+                        }
+
                         stackOperator.push(arrayExpr[i]);
                     }
                     else {
@@ -72,7 +75,7 @@ function expressionCalculator(expr) {
         stackOutput.push(stackOperator.pop());
     }
     
-
+    
     return +polak(stackOutput)[0].toFixed(4);
 }
 function topStack(stack) {
